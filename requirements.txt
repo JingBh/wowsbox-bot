@@ -1,0 +1,4 @@
+environs
+expiringdict
+python-telegram-bot
+requests
