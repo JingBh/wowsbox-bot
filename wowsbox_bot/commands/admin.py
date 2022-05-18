@@ -34,6 +34,13 @@ def admin_command(update: Update, context: CallbackContext):
                 del context.dispatcher.user_data[user_id]['containers'][context.args[1]]
 
             update.effective_message.reply_text('指令执行成功')
+        elif command == 'super_before_ship':
+            user_id = update.effective_user.id
+            if update.effective_message.reply_to_message is not None:
+                user_id = update.effective_message.reply_to_message.from_user.id
+
+            update.effective_chat.send_message(context.dispatcher.user_data[user_id].get('super_before_ship', 0))
+            update.effective_message.reply_text('指令执行成功')
         else:
             update.effective_message.reply_text('此指令不存在')
     else:
