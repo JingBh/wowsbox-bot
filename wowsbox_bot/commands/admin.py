@@ -19,7 +19,7 @@ def admin_command(update: Update, context: CallbackContext):
         command = context.args[0]
         if command == 'give':
             if len(context.args) < 2:
-                update.effective_message.reply_text('命令参数不足')
+                update.effective_message.reply_text('指令参数不足')
 
             user_id = update.effective_user.id
             if update.effective_message.reply_to_message is not None:
@@ -30,10 +30,12 @@ def admin_command(update: Update, context: CallbackContext):
             if context.args[1] not in context.dispatcher.user_data[user_id]['containers']:
                 context.dispatcher.user_data[user_id]['containers'][context.args[1]] = 0
             context.dispatcher.user_data[user_id]['containers'][context.args[1]] += int(context.args[2])
+            if context.dispatcher.user_data[user_id]['containers'][context.args[1]] <= 0:
+                del context.dispatcher.user_data[user_id]['containers'][context.args[1]]
 
-            update.effective_message.reply_text('命令执行成功')
+            update.effective_message.reply_text('指令执行成功')
         else:
-            update.effective_message.reply_text('此命令不存在')
+            update.effective_message.reply_text('此指令不存在')
     else:
         update.effective_message.reply_text('你寄吧谁啊，爬')
 
