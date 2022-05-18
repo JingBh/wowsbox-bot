@@ -1,8 +1,10 @@
 from __future__ import annotations
 
-import random
 from dataclasses import dataclass, field
+from random import SystemRandom
 from typing import Union, List, Tuple
+
+random = SystemRandom()
 
 
 @dataclass
@@ -115,6 +117,26 @@ i18n_resources = {
     'slot': '⚓️ 港口船位'
 }
 
+ship_pack = Pack(odds=[
+    (0.0005, Pack(odds=[
+        (10, Ship(1, "Ⅹ")),
+        (9, Ship(1, "Ⅸ")),
+        (5, Ship(1, "Ⅷ")),
+        (5, Ship(1, "Ⅶ")),
+        (3, Ship(1, "Ⅵ")),
+        (4, Ship(1, "Ⅴ")),
+    ])),
+    (0.002, Pack(odds=[
+        (6, Ship(1, "Ⅸ")),
+        (35, Ship(1, "Ⅷ")),
+    ])),
+    (0.0125, Pack(odds=[
+        (23, Ship(1, "Ⅶ")),
+        (22, Ship(1, "Ⅵ")),
+        (16, Ship(1, "Ⅴ"))
+    ]))
+])
+
 odds_containers = {
     'mc': Pack(drops=[
         Resource(50000, 'credit'),
@@ -186,23 +208,7 @@ odds_containers = {
     ]),
 
     'super': Pack(odds=[
-        (0.0005, Pack(odds=[
-            (10, Ship(1, "X")),
-            (9, Ship(1, "IX")),
-            (5, Ship(1, "VIII")),
-            (5, Ship(1, "VII")),
-            (3, Ship(1, "VI")),
-            (4, Ship(1, "V")),
-        ])),
-        (0.002, Pack(odds=[
-            (6, Ship(1, "IX")),
-            (35, Ship(1, "VIII")),
-        ])),
-        (0.0125, Pack(odds=[
-            (23, Ship(1, "VII")),
-            (22, Ship(1, "VI")),
-            (16, Ship(1, "V"))
-        ])),
+        (0.015, ship_pack),
         (0.1815, Camo.generate_pack(50, ['万圣节', 'gamescom黑', '海上幽魂', '无限火力', 'Lá Fhéile Pádraig', '情人节', '《战舰世界》周年纪念',
                                          "Stars 'n' Stripes", 'Union Jack', 'Revolutionary', 'Sci-Fi Space', 'Victory',
                                          '末世', '法国里维埃拉', '意大利皇家海军', '冰杉树', '新年彩带', '类型 59', '猎人', '胜利的火花', '暴风',

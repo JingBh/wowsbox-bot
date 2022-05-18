@@ -6,7 +6,7 @@ from telegram import Update, ParseMode, ReplyKeyboardMarkup, KeyboardButton, Rep
 from telegram.ext import CallbackContext, CommandHandler, MessageHandler, Filters
 
 from ..utils import is_group, encode_data
-from ..wows import Container, i18n_containers
+from ..wows import Container, i18n_containers, ship_pack, Ship
 
 
 def open_command(update: Update, context: CallbackContext):
@@ -73,7 +73,22 @@ def open_message(update: Update, context: CallbackContext):
     message_sent.edit_text('‎\n\n\n      📦\n      🚢')
     time.sleep(0.1)
 
-    drops = requested_container.get_pack().get_drops()
+    if context.user_data.get('super_before_ship', 0) >= 165:
+        drops = ship_pack.get_drops()
+        context.user_data['super_before_ship'] = 0
+
+        message_sent.reply_text('非比，吃保底了', quote=True)
+    else:
+        drops = requested_container.get_pack().get_drops()
+
+        for drop in drops:
+            if type(drop) is Ship:
+                context.user_data['super_before_ship'] = 0
+                break
+        else:
+            if 'super_before_ship' not in context.user_data:
+                context.user_data['super_before_ship'] = 0
+            context.user_data['super_before_ship'] += 1
 
     message = ''
     if is_group(update):
